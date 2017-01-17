@@ -101,4 +101,25 @@ func PyGILState_Release(state PyGILState) {
 	C.PyGILState_Release(C.PyGILState_STATE(state))
 }
 
+// Create a new sub-interpreter.
+func Py_NewInterpreter() *PyThreadState {
+	pstate := C.Py_NewInterpreter()
+	return &PyThreadState{ptr: pstate}
+}
+
+// Destroy the (sub-)interpreter represented by the given thread state. 
+func Py_EndInterpreter(state *PyThreadState) {
+  C.Py_EndInterpreter(state.ptr)
+}
+
+//Swap the current thread state with the thread state given by the argument tstate, which may be NULL. The global interpreter lock must be held and is not released.
+func PyThreadState_Swap(state *PyThreadState) *PyThreadState {
+  pstate := C.PyThreadState_Swap(state.ptr)
+	return &PyThreadState{ptr: pstate}
+}
+
+func PyEval_InitThreads() {
+  C.PyEval_InitThreads()
+}
+
 // EOF
